@@ -1,42 +1,78 @@
-var API_URL_PREFIX = "/healthylinkx/api.php?rquest=";
+//var API_URL_PREFIX = "http://127.0.0.1:8081/";
+var API_URL_PREFIX = "http://127.0.0.1:8080/api.php?rquest=";
+
+//var methodseparator="?"
+var methodseparator="&"
+var paramseparator="&"
 
 function showSearchResults() {
 
 	$('#MessageArea').hide();
 
 	var requeststring = API_URL_PREFIX+"providers";
+	var firstparam = true;
 
 	var buffer= $('#zipCode').val();
 	if (buffer){
-		requeststring+="&zipcode=";
+		if(firstparam){
+			requeststring+=methodseparator;
+			firstparam=false;
+		}else{
+			requeststring+=paramseparator;
+		}
+		requeststring+="zipcode=";
 		requeststring+=buffer;
 	}
 	
 	buffer="";
 	var buffer= $('#gender').val();
 	if ((buffer[0]=='M')||(buffer[0]=='F')){
-		requeststring+="&gender=";
+		if(firstparam){
+			requeststring+=methodseparator;
+			firstparam=false;
+		}else{
+			requeststring+=paramseparator;
+		}
+		requeststring+="gender=";
 		requeststring+=buffer[0];
 	}
 
 	buffer="";
 	var buffer= $('#lastname').val();
 	if (buffer){
-		requeststring+="&lastname1=";
+		if(firstparam){
+			requeststring+=methodseparator;
+			firstparam=false;
+		}else{
+			requeststring+=paramseparator;
+		}
+		requeststring+="lastname1=";
 		requeststring+=buffer;
 	}
 
 	buffer="";
 	var buffer= $('#specialty').val();
 	if (buffer){
-		requeststring+="&specialty=";
+		if(firstparam){
+			requeststring+=methodseparator;
+			firstparam=false;
+		}else{
+			requeststring+=paramseparator;
+		}
+		requeststring+="specialty=";
 		requeststring+=buffer;
 	}
 
 	buffer="";
 	var buffer= $('#distance').val();
 	if (buffer){
-		requeststring+="&distance=";
+		if(firstparam){
+			requeststring+=methodseparator;
+			firstparam=false;
+		}else{
+			requeststring+=paramseparator;
+		}
+		requeststring+="distance=";
 		requeststring+=buffer;
 	}
 
@@ -78,7 +114,6 @@ function showShortProviderList(){
 		showMessage('No providers were selected.');
 		return;
 	}
-	var requeststring = API_URL_PREFIX+"shortlist";
 
 	var len= selectedNPIs.length;
 	if (len >3) {
@@ -86,9 +121,17 @@ function showShortProviderList(){
 		return;
 	}
 
-	for(var i=0; i < len; i++) {
+	var requeststring = API_URL_PREFIX+"shortlist";
+	var firstparam = true;
 
-		requeststring+="&NPI";
+	for(var i=0; i < len; i++) {
+		if(firstparam){
+			requeststring+=methodseparator;
+			firstparam=false;
+		}else{
+			requeststring+=paramseparator;
+		}
+		requeststring+="NPI";
 		requeststring+=i+1;
 		requeststring+="=";
 		requeststring+=selectedNPIs[i];
@@ -98,16 +141,18 @@ function showShortProviderList(){
 		if (data!=null) {
 			$('#shortresultsTable tbody').empty();
 			$.each(data, function(i, item) {
-				var row = "<TR>";
-				if (i=="transaction"){
-					row +='<TD>'+'<strong>'+"Transaction number: "+'</strong>'+item+'</TD>'; 
+				if (i=="Transaction"){
+					$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+item+'</TD>'+'</TR>');
 				}else{
-					$.each(item, function(j, field) {
-						row +='<TD>'+field+'</TD>'; 
+					$.each(item, function(j, provider) {
+						var row = "<TR>";
+						$.each(provider, function(j, field) {
+							row +='<TD>'+field+'</TD>'; 
+						});
+						row+='</TR>';
+						$('#shortresultsTable tbody').append(row);
 					});
 				}
-				row+='</TR>';
-				$('#shortresultsTable tbody').append(row);
 			});
 		} else {
 			showMessage('No matching providers were found.');
