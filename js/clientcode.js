@@ -1,8 +1,9 @@
-//var API_URL_PREFIX = "http://127.0.0.1:8081/";
-var API_URL_PREFIX = "http://127.0.0.1:8080/api.php?rquest=";
+var API_URL_PREFIX = "http://127.0.0.1:8081/";
+var methodseparator="?"
 
-//var methodseparator="?"
-var methodseparator="&"
+//var API_URL_PREFIX = "http://127.0.0.1:8080/api.php?rquest=";
+//var methodseparator="&"
+
 var paramseparator="&"
 
 function showSearchResults() {
@@ -76,8 +77,8 @@ function showSearchResults() {
 		requeststring+=buffer;
 	}
 
+	$('#resultsTable tbody').empty();
 	$.getJSON(requeststring,function(data){
-		$('#resultsTable tbody').empty();
 		if (data!=null) {
 			$.each(data, function(i, item) {
 				var row = "<TR>";
@@ -137,9 +138,9 @@ function showShortProviderList(){
 		requeststring+=selectedNPIs[i];
 	}
 
+	$('#shortresultsTable tbody').empty();
 	$.getJSON(requeststring,function(data){
 		if (data!=null) {
-			$('#shortresultsTable tbody').empty();
 			$.each(data, function(i, item) {
 				if (i=="Transaction"){
 					$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+item+'</TD>'+'</TR>');
