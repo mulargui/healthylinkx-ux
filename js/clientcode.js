@@ -2,6 +2,7 @@ var API_URL_PREFIX = "http://127.0.0.1:8081/";
 var methodseparator="?"
 
 //var API_URL_PREFIX = "http://127.0.0.1:8080/api.php?rquest=";
+//var API_URL_PREFIX = "http://127.0.0.1:8081/api.php?rquest=";
 //var methodseparator="&"
 
 var paramseparator="&"
