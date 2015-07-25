@@ -1,4 +1,5 @@
 var API_URL_PREFIX = "http://127.0.0.1:8081/";
+//var API_URL_PREFIX = "http://192.168.1.228:8081/"; //android phones doesn't like localhost
 var methodseparator="?"
 
 //var API_URL_PREFIX = "http://127.0.0.1:8080/api.php?rquest=";
@@ -8,9 +9,6 @@ var methodseparator="?"
 var paramseparator="&"
 
 function showSearchResults() {
-
-	$('#MessageArea').hide();
-
 	var requeststring = API_URL_PREFIX+"providers";
 	var firstparam = true;
 
@@ -97,20 +95,13 @@ function showSearchResults() {
 			showMessage('No matching providers were found.');
 		}
 	});
-
-	$('#ProvidersSearch').hide();
-	$('#ProvidersShortList').hide();
-	$('#ProvidersList').show();
 }
 
 function showShortProviderList(){
-
-	$('#MessageArea').hide();
-
 	var selectedNPIs = new Array();
 	$('#resultsTable input:checked').each(function() {
-	    	selectedNPIs.push($(this).attr('id'));
-    	});
+	    selectedNPIs.push($(this).attr('id'));
+    });
 
 	if (selectedNPIs.length==0) {
 		showMessage('No providers were selected.');
@@ -143,12 +134,12 @@ function showShortProviderList(){
 	$.getJSON(requeststring,function(data){
 		if (data!=null) {
 			$.each(data, function(i, item) {
-				if (i=="Transaction"){
-					$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+item+'</TD>'+'</TR>');
+				if ("Transaction" in item){
+					$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+item.Transaction+'</TD>'+'</TR>');
 				}else{
 					$.each(item, function(j, provider) {
 						var row = "<TR>";
-						$.each(provider, function(j, field) {
+						$.each(provider, function(k, field) {
 							row +='<TD>'+field+'</TD>'; 
 						});
 						row+='</TR>';
@@ -160,20 +151,21 @@ function showShortProviderList(){
 			showMessage('No matching providers were found.');
 		}
 	});
-
-	$('#ProvidersSearch').hide();
-	$('#ProvidersList').hide();
-	$('#ProvidersShortList').show();
 }
 
 function loadTaxonomyCodes() {
 	var taxonomyTags = new Array();
-	$.getJSON(API_URL_PREFIX+"taxonomy",function(data){
+	$.getJSON(API_URL_PREFIX+"taxonomy")
+	.done(function(data){
 		$.each(data, function(i, code){
 			taxonomyTags.push(code.Classification);
 		});
+		$("#specialty").autocomplete({source: taxonomyTags});
+	})
+	.fail(function(jqxhr, textStatus, error ) {
+		var err = textStatus + ", " + error;
+		showMessage(err);
 	});
-	$("#specialty").autocomplete({source: taxonomyTags});
 }
 
 function showMessage(text) {
@@ -182,21 +174,29 @@ function showMessage(text) {
 }
 
 function newSearch() {
+	$('#MessageArea').hide();
 	$('#ProvidersList').hide();
 	$('#ProvidersShortList').hide();
-	$('#MessageArea').hide();
 	$('#ProvidersSearch').show();
 }
 
 function shortProviderList() {
+	$('#MessageArea').hide();
 	showShortProviderList();
+	$('#ProvidersSearch').hide();
+	$('#ProvidersList').hide();
+	$('#ProvidersShortList').show();
 }
 
 function searchProviders() {
+	$('#MessageArea').hide();
 	showSearchResults();
+	$('#ProvidersSearch').hide();
+	$('#ProvidersShortList').hide();
+	$('#ProvidersList').show();
 }
 
+//comment when using cordova
 $(document).ready(function() {
 	loadTaxonomyCodes(); 	
 });
-
