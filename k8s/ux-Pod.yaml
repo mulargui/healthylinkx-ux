@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: healthylinkx-ux-pod
+spec:
+ containers:
+ - name: healthylinkx-ux
+   image: apache
+   imagePullPolicy: Never 
+   ports:
+   - containerPort: 80
+   env:
+   volumeMounts:
+     - name: myapp
+       mountPath: /var/www/html
+ restartPolicy: OnFailure
+ volumes:
+ - name: myapp
+   hostPath:
+     path: /c/Users/mulargui/cluster/healthylinkx-ux
+     type: Directory

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthylinkx-ux-deployment
+  labels:
+    app: healthylinkx-ux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthylinkx-ux
+  template:
+    metadata:
+      labels:
+        app: healthylinkx-ux
+    spec:        
+      containers:
+      - name: healthylinkx-ux
+        image: apache
+        imagePullPolicy: Never 
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: myapp
+          mountPath: /var/www/html
+      volumes:
+      - name: myapp
+        hostPath:
+          path: /c/Users/mulargui/cluster/healthylinkx-ux
+          type: Directory
+     
