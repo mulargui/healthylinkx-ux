@@ -5,11 +5,16 @@ kubectl delete deployments healthylinkx-ux-deployment
 
 IF "%1"=="CLEAN" exit /B 0
 
+rem mount the directory
+minikube mount %~dp0..:/mnt/healthylinkx-ux
+
 rem create the containers
-minikube ssh /c/Users/mulargui/cluster/healthylinkx-ux/docker/container.sh BUILD
+minikube ssh /mnt/healthylinkx-ux/docker/container.sh BUILD
+
+exit /b 0
 
 rem create new resources
-kubectl create -f %userprofile%/cluster/healthylinkx-ux/k8s/ux-service.yaml
-kubectl create -f %userprofile%/cluster/healthylinkx-ux/k8s/ux-deployment.yaml
+kubectl create -f %~dp0.\ux-service.yaml
+kubectl create -f %~dp0.\ux-deployment.yaml
 
 exit /B 0
