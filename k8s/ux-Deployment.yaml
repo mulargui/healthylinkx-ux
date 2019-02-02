@@ -26,6 +26,6 @@ spec:
       volumes:
       - name: myapp
         hostPath:
-          path: /c/Users/mulargui/cluster/healthylinkx-ux/src
+          path: /home/docker/healthylinkx-ux/src
           type: Directory
      

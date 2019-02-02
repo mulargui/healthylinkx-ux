@@ -1,19 +1,15 @@
 
-rem cleanup previous instalations
-kubectl delete services healthylinkx-ux-service
-kubectl delete deployments healthylinkx-ux-deployment
-
-IF "%1"=="CLEAN" exit /B 0
-
 rem mount the directory
-minikube mount %~dp0..:/mnt/healthylinkx-ux
+rem there is a bug https://github.com/kubernetes/minikube/issues/2442
+rem start minikube mount --ip 192.168.99.1 %~dp0..:/mnt/healthylinkx-ux
+
+rem as mount doesn't work (it does as root) we use a link
+minikube ssh "ln -s /c/Users/Mauricio/Documents/healthylinkx-ux /home/docker/healthylinkx-ux"
 
 rem create the containers
-minikube ssh /mnt/healthylinkx-ux/docker/container.sh BUILD
+minikube ssh "/home/docker/healthylinkx-ux/docker/container.sh BUILD"
 
-exit /b 0
-
-rem create new resources
+rem create resources
 kubectl create -f %~dp0.\ux-service.yaml
 kubectl create -f %~dp0.\ux-deployment.yaml
 
