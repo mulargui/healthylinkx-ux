@@ -5,7 +5,7 @@ Healthylinkx is a 3 tiers app: ux, api and datastore. Healthylinkx creates and r
 This repo implements the ux tier in a single page web app using bootstrap and jquery. It is a container running apache.
 
 Directories:\
-Src. the code of the app. index.html has the web page and bootstrap code. js/clientcode.js contains the javascript code specific to this app. To note that at the top of this file it is declared the URL to the api and you might need to edit it.\
+Src. the code of the app. index.html has the web page and bootstrap code. js/clientcode.js contains the javascript code specific to this app. To note that at the top of this file it is declared the URL to the api (API_URL_PREFIX)and you need to update it to minikube ip (run minikube ip command to get it).\
 vm. files to setup a vm using vagrant and virtualbox. move the vagrantfile to the root of the repo.\
 docker. how to create and manage the container.\
 k8s. templates to create the service in kubernetes. tested with minikube. Edit setup.bat to point to the directory where you cloned the repo\
