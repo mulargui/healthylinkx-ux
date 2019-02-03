@@ -42,7 +42,7 @@ fi
 if [ "${BUILD}" == "Y" ]; then
 	./$0 CLEAR
 	./$0 CLEANUP
-	sudo docker build -q --rm=true -t apache $REPOPATH/docker
+	sudo docker build --rm=true -t apache $REPOPATH/docker
 fi
 
 # run the container database in the background (including initial data load
